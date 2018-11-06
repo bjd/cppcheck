@@ -99,6 +99,7 @@ private:
         TEST_CASE(ifelse8); // #5747 - if (fd == -1)
         TEST_CASE(ifelse9); // #5273 - if (X(p==NULL, 0))
         TEST_CASE(ifelse10); // #8794 - if (!(x!=NULL))
+        TEST_CASE(ifelse11);
 
         // switch
         TEST_CASE(switch1);
@@ -1157,6 +1158,18 @@ private:
               "    if (!(x != NULL))\n"
               "        return;\n"
               "    free(x);\n"
+              "}");
+        ASSERT_EQUALS("", errout.str());
+    }
+
+    void ifelse11() {
+        check("char* f(int i) {\n"
+              "  char *c;\n"
+              "  if (i && (c = malloc(1))){\n"
+              "  }\n"
+              "  else\n"
+              "    c = NULL;\n"
+              "  return c;\n"
               "}");
         ASSERT_EQUALS("", errout.str());
     }
